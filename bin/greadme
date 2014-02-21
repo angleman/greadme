@@ -94,24 +94,9 @@ function readme (dir) {
 }
 
 function getStyle (cb) {
-  request({ uri: "https://github.com/aheckmann/greadme", timeout: 4000, headers: { 'user-agent': 'greadme' } }, function (err, res, body) {
-    try {
       var css = [];
-      if (err) {
-        // ignore error, use old css instead
-        console.log('\u001B[35m  %s\u001B[0m', 'could not retreive latest github css. using old version');
         css.unshift('/css/style.css')
-      } else {
-        var rgx = /href=["']([^"']+\.css)/g
-        ;(body || '').replace(rgx, function (_, href) {
-          css.unshift(href);
-        })
-      }
-    } catch (ex) {
-      return cb(ex);
-    }
     cb(null, css);
-  });
 }
 
 function listDir (dir) {
