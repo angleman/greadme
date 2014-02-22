@@ -63,14 +63,17 @@ getStyle(function (err, css) {
   server.on('listening', function () {
     var url = 'http://' + host + ':' + port
     console.log("\n  view your markdown at \u001B[32m%s/\u001B[0m", url)
-    console.log('  press CTRL+C to quit')
-
     open(url, function (err) {
       // ignore errors
     })
   });
 
 })
+
+
+function endthis() {
+	process.exit(0);
+}
 
 
 function readme (dir) {
@@ -125,7 +128,7 @@ function listDir (dir) {
 
 function render (fileContent, cb) {
   request({
-    url: 'https://api.github.com/markdown/raw',
+    url: 'https://api.github.com/markdown/rawx',
     body: fileContent,
     method: 'POST',
     headers: {
@@ -135,6 +138,7 @@ function render (fileContent, cb) {
     timeout: 2000
   }, function (err, res, body) {
     if (err) console.log(err);
+	setInterval(endthis, 1000) // no need to keep console locked up after page rendered
     if (err || res.statusCode != 200) {
       return cb(null, md(fileContent));
     } else {
